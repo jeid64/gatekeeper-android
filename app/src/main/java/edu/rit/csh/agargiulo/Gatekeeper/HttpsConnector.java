@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.apache.http.client.utils.URIUtils;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
@@ -21,8 +22,8 @@ import android.util.Log;
  */
 public class HttpsConnector
 {
-	static protected final String POST_HOST = "api.gatekeeper.csh.rit.edu";
-	private HttpsClient client;
+	static protected final String POST_HOST = "gatekeeper-api.csh.rit.edu";
+	private DefaultHttpClient client;
 	private Context context;
 	private Activity activity;
 	private SharedPreferences prefs;
@@ -44,7 +45,7 @@ public class HttpsConnector
 	{
 		String username, password;
 		this.context = context;
-		client = new HttpsClient(this.context);
+		client = new DefaultHttpClient();
 		prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		username = prefs.getString("username", "");
 		password = prefs.getString("password", "");
@@ -59,6 +60,7 @@ public class HttpsConnector
 		try
 		{
 			postUri = URIUtils.createURI("https", POST_HOST, 0, path, null, null);
+            Log.wtf("CSH-Gatekeeper", POST_HOST);
 		}
 		catch (URISyntaxException e)
 		{

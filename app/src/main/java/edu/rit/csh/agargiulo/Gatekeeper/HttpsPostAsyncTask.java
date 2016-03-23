@@ -10,6 +10,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -25,7 +26,7 @@ import android.util.Log;
  */
 public class HttpsPostAsyncTask extends AsyncTask<BasicNameValuePair, Integer, String>
 {
-	private HttpsClient gatekeeperClient;
+	private DefaultHttpClient gatekeeperClient;
 	private Activity activity;
 	private ProgressDialog progress;
 	private int doorID;
@@ -34,7 +35,7 @@ public class HttpsPostAsyncTask extends AsyncTask<BasicNameValuePair, Integer, S
 	/**
 	 * 
 	 */
-	public HttpsPostAsyncTask (HttpsClient client, Activity callingActivity, int doorID)
+	public HttpsPostAsyncTask (DefaultHttpClient client, Activity callingActivity, int doorID)
 	{
 		gatekeeperClient = client;
 		activity = callingActivity;
