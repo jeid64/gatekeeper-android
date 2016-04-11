@@ -60,7 +60,6 @@ public class HttpsConnector
 		try
 		{
 			postUri = URIUtils.createURI("https", POST_HOST, 0, path, null, null);
-            Log.wtf("CSH-Gatekeeper", POST_HOST);
 		}
 		catch (URISyntaxException e)
 		{
