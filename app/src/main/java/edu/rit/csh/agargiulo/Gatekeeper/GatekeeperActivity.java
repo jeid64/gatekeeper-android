@@ -10,7 +10,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -132,6 +136,12 @@ public class GatekeeperActivity extends Activity
 			connector = new HttpsConnector(this);
 		}
 		connector.getAllDoors();
+		String nfcDoorPop = getIntent().getStringExtra("nfcDoorPop");
+		if (nfcDoorPop != null) {
+			int doorId = Integer.valueOf(nfcDoorPop);
+			connector.popDoor(doorId);
+		}
+
 	}
 
 	@Override

@@ -3,7 +3,11 @@ package edu.rit.csh.agargiulo.Gatekeeper;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
@@ -56,8 +60,18 @@ public class WelcomeActivity extends Activity
 		prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		if (prefs.getBoolean(Gatekeeper.PREF_LOGGEDIN, false))
 		{
+			Intent intent = getIntent();
+			String nfcData = null;
+			if(intent.getType() != null && intent.getType().equals("application/edu.rit.csh.agargiulo.gatekeeper")) {
+				// Read the first record which contains the NFC data
+				Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+				NdefRecord relayRecord = ((NdefMessage) rawMsgs[0]).getRecords()[0];
+				nfcData = new String(relayRecord.getPayload());
+			}
 			// User is already logged in, start the next activity
-			startActivity(new Intent(getApplicationContext(), GatekeeperActivity.class));
+			Intent activityintent = new Intent(getApplicationContext(), GatekeeperActivity.class);
+			activityintent.putExtra("nfcDoorPop", nfcData);
+			startActivity(activityintent);
 			finish();
 		}
 	}
@@ -67,6 +81,7 @@ public class WelcomeActivity extends Activity
 	{
 		super.onResume();
 		setContentView(R.layout.activity_welcome);
+
 	}
 
 	@Override
