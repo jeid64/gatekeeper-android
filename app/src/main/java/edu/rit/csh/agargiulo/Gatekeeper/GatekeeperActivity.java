@@ -6,11 +6,17 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -30,7 +37,8 @@ import com.google.android.gms.wearable.Wearable;
  * 
  * @author Anthony Gargiulo <anthony@agargiulo.com>
  */
-public class GatekeeperActivity extends Activity {
+public class GatekeeperActivity extends Activity
+{
 	class InvalidCredsOnClickListener implements DialogInterface.OnClickListener
 	{
 
@@ -124,8 +132,6 @@ public class GatekeeperActivity extends Activity {
 
 	}
 
-
-
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
 	{
@@ -140,6 +146,41 @@ public class GatekeeperActivity extends Activity {
 		connector.getAllDoors();
 		Intent wearlistenerservice = new Intent(this, WearListenerService.class);
 		startService(wearlistenerservice);
+		String nfcDoorPop = getIntent().getStringExtra("nfcDoorPop");
+		if (nfcDoorPop != null) {
+			int doorId = Integer.valueOf(nfcDoorPop);
+			connector.popDoor(doorId);
+		}
+
+	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		nfcAdapter.disableForegroundDispatch(this);
+	}
+
+	@Override
+	public void onNewIntent(Intent intent) {
+		if(intent.getType() != null && intent.getType().equals("application/edu.rit.csh.agargiulo.gatekeeper")) {
+			// Read the first record which contains the NFC data
+			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+			NdefRecord relayRecord = ((NdefMessage) rawMsgs[0]).getRecords()[0];
+			String nfcDoorPop = new String(relayRecord.getPayload());
+			if (!nfcDoorPop.equals("")) {
+				int doorId = Integer.valueOf(nfcDoorPop);
+				connector.popDoor(doorId);
+			}
+		}
 	}
 
 	@Override
@@ -320,6 +361,8 @@ public class GatekeeperActivity extends Activity {
 					tempButton = (Button) findViewById(getId(door));
 					tempButton.setBackgroundColor(getColorFromState(responseStr));
 					tempButton.setEnabled(true);
+
+					Toast.makeText(this, "Popped open door!", Toast.LENGTH_SHORT).show();
 				}
 				else
 				{

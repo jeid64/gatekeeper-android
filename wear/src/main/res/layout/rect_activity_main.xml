@@ -4,7 +4,78 @@
     android:layout_height="match_parent" android:orientation="vertical"
     tools:context="edu.rit.csh.agargiulo.Gatekeeper.MainActivity" tools:deviceIds="wear_square">
 
-    <TextView android:id="@+id/textbox" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="@string/hello_square"
-        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+        <Button
+            android:id="@+id/door_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:hapticFeedbackEnabled="true"
+            android:onClick="popLock"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="User Center" />
+        <Button
+            android:id="@+id/door_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/door_4"
+            android:layout_marginTop="20dp"
+            android:onClick="popLock"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <Button
+            android:id="@+id/door_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/door_5"
+            android:layout_marginTop="20dp"
+            android:onClick="popLock"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Server Room" />
+
+        <Button
+            android:id="@+id/door_7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/door_6"
+            android:layout_marginTop="20dp"
+            android:onClick="popLock"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Project Room" />
+
+        <Button
+            android:id="@+id/door_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/door_7"
+            android:layout_marginTop="20dp"
+            android:onClick="popLock"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <Button
+            android:id="@+id/door_9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/door_8"
+            android:layout_marginTop="20dp"
+            android:onClick="popLock"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+    </LinearLayout>
+    </ScrollView>
+
+
 </LinearLayout>

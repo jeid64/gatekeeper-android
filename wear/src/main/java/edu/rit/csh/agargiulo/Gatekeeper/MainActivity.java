@@ -1,6 +1,7 @@
 package edu.rit.csh.agargiulo.Gatekeeper;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
@@ -73,23 +74,41 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.textbox);
-                mTextView.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Log.v("Gatekeeper", "onclick");
-                        String text = "LOL";
-
-                        sendMessage(START_ACTIVITY, text);
-                    }
-
-                });
             }
         });
         initGoogleApiClient();
         sendMessage(WEAR_MESSAGE_PATH, "YUUUUUUGE");
 
+    }
+
+    public void popLock (View view)
+    {
+        ((Button) view).setBackgroundColor(Color.parseColor("#FF8080"));
+        int doorId;
+        switch (view.getId())
+        {
+            case R.id.door_4:
+                doorId = 4;
+                break;
+            case R.id.door_5:
+                doorId = 5;
+                break;
+            case R.id.door_6:
+                doorId = 6;
+                break;
+            case R.id.door_7:
+                doorId = 7;
+                break;
+            case R.id.door_8:
+                doorId = 8;
+                break;
+            case R.id.door_9:
+                doorId = 9;
+                break;
+            default:
+                doorId = -1;
+        }
+        sendMessage(START_ACTIVITY, String.valueOf(doorId));
     }
 
     @Override
