@@ -164,14 +164,12 @@ public class GatekeeperActivity extends Activity
 
 	@Override
 	public void onNewIntent(Intent intent) {
-		String nfcData = null;
 		if(intent.getType() != null && intent.getType().equals("application/edu.rit.csh.agargiulo.gatekeeper")) {
 			// Read the first record which contains the NFC data
 			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 			NdefRecord relayRecord = ((NdefMessage) rawMsgs[0]).getRecords()[0];
-			nfcData = new String(relayRecord.getPayload());
-			String nfcDoorPop = nfcData;
-			if (nfcDoorPop != null) {
+			String nfcDoorPop = new String(relayRecord.getPayload());
+			if (!nfcDoorPop.equals("")) {
 				int doorId = Integer.valueOf(nfcDoorPop);
 				connector.popDoor(doorId);
 			}
