@@ -16,17 +16,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.google.analytics.tracking.android.EasyTracker;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Wearable;
 
 /**
  * This is the class for the Main Activity of the Gatekeeper App
  * 
  * @author Anthony Gargiulo <anthony@agargiulo.com>
  */
-public class GatekeeperActivity extends Activity
-{
+public class GatekeeperActivity extends Activity {
 	class InvalidCredsOnClickListener implements DialogInterface.OnClickListener
 	{
 
@@ -120,6 +124,8 @@ public class GatekeeperActivity extends Activity
 
 	}
 
+
+
 	@Override
 	protected void onCreate (Bundle savedInstanceState)
 	{
@@ -132,6 +138,8 @@ public class GatekeeperActivity extends Activity
 			connector = new HttpsConnector(this);
 		}
 		connector.getAllDoors();
+		Intent wearlistenerservice = new Intent(this, WearListenerService.class);
+		startService(wearlistenerservice);
 	}
 
 	@Override

@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 23
     buildToolsVersion "23.0.3"
+    useLibrary  'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "edu.rit.csh.agargiulo.Gatekeeper"
-        minSdkVersion 8
-        targetSdkVersion 19
+        minSdkVersion 9
+        targetSdkVersion 23
     }
 
     buildTypes {
@@ -19,6 +20,11 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:support-v4:23.2.1'
     compile files('libs/libGoogleAnalyticsServices.jar')
+    compile 'com.google.android.gms:play-services-wearable:8.4.0'
+    //compile 'com.google.android.gms:play-services-wearable:7.5.0'
+    //compile 'com.google.android.gms:play-services-wearable:7.5.0'
+
+
 }
