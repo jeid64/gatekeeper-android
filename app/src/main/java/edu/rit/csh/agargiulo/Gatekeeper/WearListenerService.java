@@ -92,6 +92,8 @@ public class WearListenerService extends WearableListenerService implements Goog
             if( messageEvent.getPath().equalsIgnoreCase( START_ACTIVITY ) ) {
                 Intent intent = new Intent( this, GatekeeperActivity.class );
                 intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                String messageData = new String(messageEvent.getData());
+                intent.putExtra("nfcDoorPop", messageData);
                 startActivity( intent );
             } else {
                 super.onMessageReceived(messageEvent);

@@ -81,7 +81,7 @@ public class MainActivity extends Activity implements GoogleApiClient.Connection
                         Log.v("Gatekeeper", "onclick");
                         String text = "LOL";
 
-                        sendMessage(WEAR_MESSAGE_PATH, text);
+                        sendMessage(START_ACTIVITY, text);
                     }
 
                 });
