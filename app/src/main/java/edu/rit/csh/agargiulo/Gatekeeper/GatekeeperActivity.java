@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -142,6 +143,37 @@ public class GatekeeperActivity extends Activity
 			connector.popDoor(doorId);
 		}
 
+	}
+
+	@Override
+	public void onResume(){
+		super.onResume();
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+		nfcAdapter.disableForegroundDispatch(this);
+	}
+
+	@Override
+	public void onNewIntent(Intent intent) {
+		String nfcData = null;
+		if(intent.getType() != null && intent.getType().equals("application/edu.rit.csh.agargiulo.gatekeeper")) {
+			// Read the first record which contains the NFC data
+			Parcelable[] rawMsgs = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+			NdefRecord relayRecord = ((NdefMessage) rawMsgs[0]).getRecords()[0];
+			nfcData = new String(relayRecord.getPayload());
+			String nfcDoorPop = nfcData;
+			if (nfcDoorPop != null) {
+				int doorId = Integer.valueOf(nfcDoorPop);
+				connector.popDoor(doorId);
+			}
+		}
 	}
 
 	@Override

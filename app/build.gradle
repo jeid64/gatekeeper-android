@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "edu.rit.csh.agargiulo.Gatekeeper"
-        minSdkVersion 8
+        minSdkVersion 10
         targetSdkVersion 19
     }
 
